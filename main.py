@@ -5,10 +5,11 @@ from langchain_chroma import Chroma
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.docstore.document import Document
-import os,uuid
+import uuid
 
-pdf_path="iphone_manual.pdf"
-llm=OllamaLLM(model="llama3")
+pdf_path="manual.pdf"
+
+llm=OllamaLLM(model="llama3",temperature=1)
 
 def load_documents(pdf_path):
     loader=PyPDFLoader(pdf_path)
@@ -34,15 +35,14 @@ def init_db():
        collection_name=collection_name 
     ) 
     
-def doc2str(docs):
-    return "\n\n".join(doc.page_content for doc in docs)
-
 #Generate the embeddings of the chunks
 def create_embeddings(chunks,db):
     for chunk in chunks:
-        document = Document(page_content=chunk.page_content,  )
+        document = Document(page_content=chunk.page_content,metadata=chunk.metadata  ) #also you can add the metadata; metadata=chunk.metadata
         db.add_documents([document])
 
+def doc2str(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
 
 def RAG(instruction):
     db=init_db()
@@ -61,5 +61,5 @@ def RAG(instruction):
     print(response)
 
 
-instruction="what is the document about?"
+instruction="is this document somehow related to washing machine?"
 RAG(instruction)
