@@ -176,3 +176,7 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python
 
 try.py
+.deepeval_telementry.txt
+iphone_manual.pdf
+manual.pdf
+chroma_langchain_db/

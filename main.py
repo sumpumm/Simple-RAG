@@ -7,6 +7,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.retrievers import BM25Retriever
 from langchain.docstore.document import Document
 from prompt_template import *
+from hallucination_checker import evaluator
 import uuid
 
 pdf_path = "manual.pdf"
@@ -49,13 +50,13 @@ def rerank_with_colbert(query, documents):
     document_texts = [doc.page_content for doc in documents]
     
     # Rerank the documents
-    reranked_results = colbert.rerank(query, document_texts, k=len(documents))
-    # return reranked_results
+    reranked_results = colbert.rerank(query, document_texts, k=5)
+
     # Extract the indices from the reranked results
     reranked_indices = [result["result_index"] for result in reranked_results]
     return [documents[i] for i in reranked_indices]
 
-def RAG(question):
+def main(question):
     loaded_document = load_documents(pdf_path)
     chunks = split(loaded_document)
     db = init_db()
@@ -73,19 +74,22 @@ def RAG(question):
 
     reranked_results = rerank_with_colbert(question, results)
     
-    page_numbers = [reranked_result.metadata.get("page") for reranked_result in reranked_results[:5]]
+    page_numbers = [reranked_result.metadata.get("page") for reranked_result in reranked_results]
    
-    context_text=doc2str(reranked_results[:5])
+    context_text=doc2str(reranked_results)
     prompt=PromptTemplate.from_template(template())
     chain=prompt | llm 
 
     response=chain.invoke({"instruction":question,"context": context_text})
     print(response,"\n sources: ",page_numbers)
+    
+    context_list=[context_text]
+    evaluator(question,context_list,response)
 
 
 while True:
     question=input("Ask away: ")
-    print(RAG(question))
+    print(main(question))
     
     choice=input("\nEnter 1 to continue and 0 to exit: ")
     if choice == "0":
