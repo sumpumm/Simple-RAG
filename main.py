@@ -89,7 +89,7 @@ def main(question,chunks):
     results = BM_results + vector_results
 
     reranked_results = rerank_with_colbert(question, results)
-    print(reranked_results)
+    
     page_numbers = [reranked_result.metadata.get("page") for reranked_result in reranked_results]
    
     context_text=doc2str(reranked_results)

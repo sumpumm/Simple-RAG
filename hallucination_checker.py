@@ -30,7 +30,7 @@ class OllamaDeepEvalLLM(DeepEvalBaseLLM):
         pass
 
 # Initialize the DeepEval-compatible Ollama LLM
-ollama_llm = OllamaDeepEvalLLM(model="llama3")
+ollama_llm = OllamaDeepEvalLLM(model="mistral")
 
 
 def evaluator(question,context_list,response):
