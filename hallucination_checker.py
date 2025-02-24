@@ -39,7 +39,7 @@ def evaluator(question,context_list,response):
         actual_output=response,
         context=context_list
     )
-    metric = HallucinationMetric(threshold=0.7,model=ollama_llm)
+    metric = HallucinationMetric(threshold=0.5,model=ollama_llm)
 
     print("_______________________________________________")
     print("_____________Hallucibation test________________")
