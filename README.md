@@ -1,14 +1,14 @@
 ### Simple-RAG
 
-A simple implementation of Retrieval-Augmented Generation (RAG) using ChromaDB and Ollama's nomic-embed-text model for embeddings.
+A simple implementation of Retrieval-Augmented Generation (RAG) using llama3.
 
 ### Features
 
-- Document ingestion and indexing using ChromaDB
+- Document ingestion and indexing 
 
-- Query processing with semantic search
+- Query processing with hybrid search for more optimized results
 
-- Integration with Ollama's nomic-embed-text model for embeddings
+- Integration with ChromaDB to store and retrieve embeddings
 
 - Simple and easy-to-use interface
 
